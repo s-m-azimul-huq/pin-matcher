@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="generate-pin" class="form-control" type="text" value="" >
+                    <button id="generate-btn" class=" btn-primary generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="submit-pin"  maxlength="4" pattern="\d{4}" class="form-control" type="text" value="">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div id="seven" class="button btn-success">7</div>
+                              <div id="eight" class="button btn-success">8</div>
+                              <div id="nine" class="button btn-success">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div id="four" class="button btn-success">4</div>
+                              <div id="five" class="button btn-success">5</div>
+                              <div id="six" class="button btn-success">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div id="one" class="button btn-success">1</div>
+                              <div id="two" class="button btn-success">2</div>
+                              <div id="three" class="button btn-success">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="single-digit-clean" class="button btn-danger"><</div>
+                                <div id="zero" class="button btn-success">0</div>
+                                <div id="clean-digit" class="button btn-danger">C</div>
+                            </div>
+                            <div>
+                                <button id="submit-btn" type="submit" class="btn-primary submit-btn" value="">Submit</button>
+                                <p class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="notify-section">
+            <p id="mismatch" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="match" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+<!-- Script -->
+<script>
+    
+// Generate Button And Generate Pin 
+
+const generateBtn = document.getElementById("generate-btn") ;
+generateBtn.addEventListener("click", function(){
+    const generatePinNum = Math.floor(1000 + Math.random() * 9000 ) ;
+    document.getElementById("generate-pin").value = generatePinNum ;
+})
+
+// Submit Pin 
+
+const submitPin = document.getElementById("submit-pin") ;
+
+const submitBtn =  document.getElementById("submit-btn") ;
+submitBtn.addEventListener("click", function(){
+    const submitValue = submitPin.value
+    submitBtn.value = submitValue ;
+    
+    if( submitBtn.value == document.getElementById("generate-pin").value ){
+        
+        const match =  document.getElementById("match").style.display = "block" ;
+        const mismatch =  document.getElementById("mismatch").style.display = "none" ; 
+       return match, mismatch ; 
+         
+
+    }else {
+        const mismatch =  document.getElementById("mismatch").style.display = "block" ; 
+        const match =  document.getElementById("match").style.display = "none" ;
+       return mismatch, match ;
+    }
+})
+
+// Digit addEventListener
+
+const one = digitHandler("one") ;
+const two = digitHandler("two") ;
+const three = digitHandler("three") ;
+const four = digitHandler("four") ;
+const five = digitHandler("five") ;
+const six = digitHandler("six") ;
+const seven = digitHandler("seven") ;
+const eight = digitHandler("eight") ;
+const nine = digitHandler("nine") ;
+const zero = digitHandler("zero") ;
+
+
+function digitHandler(id) {
+    const digitBtn =document.getElementById(id) ;
+     digitBtn .addEventListener("click", function(){
+        const digitValue = document.getElementById(id).innerText ;
+        submitPin.value += digitValue ; 
+})
+    
+}
+
+// Remove Single Digit For Bonus Mark
+
+const singleDigitClean =document.getElementById("single-digit-clean") ;
+singleDigitClean.addEventListener("click", function(){
+    submitPin.value =  submitPin.value.slice(0, -1) ;
+})
+
+// Remove All digit For Bonus Mark
+
+const removeAll =document.getElementById("clean-digit") ;
+removeAll.addEventListener("click", function(){
+  submitPin.value = '' ;
+})
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
